@@ -56,4 +56,17 @@ bot.on('text', async (ctx) => {
   ctx.reply(`✅ Adicionado!\n\nVou avisar quando "${filme.titulo}" ficar disponível para streaming.`);
 });
 
+bot.command('lista', (ctx) => {
+  const filmes = db.prepare('SELECT titulo FROM filmes_vigiados WHERE chat_id = ?').all(ctx.chat.id);
+
+  if (filmes.length === 0) {
+    return ctx.reply('Você não está vigiando nenhum filme ainda.');
+  }
+
+  const lista = filmes.map((f) => `• ${f.titulo}`).join('\n');
+  ctx.reply(`🎬 Seus filmes vigiados:\n\n${lista}`);
+});
+
+
+
 
