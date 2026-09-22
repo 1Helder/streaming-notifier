@@ -67,6 +67,25 @@ bot.command('lista', (ctx) => {
   ctx.reply(`🎬 Seus filmes vigiados:\n\n${lista}`);
 });
 
+bot.command('remover', (ctx) => {
+  const nomeFilme = ctx.message.text.split(' ').slice(1).join(' ');
+
+  const resultado = db.prepare('DELETE FROM filmes_vigiados WHERE chat_id = ? AND titulo = ?')
+    .run(ctx.chat.id, nomeFilme);
+
+  if (resultado.changes === 0) {
+    return ctx.reply(`Não encontrei "${nomeFilme}" na sua lista.`);
+  }
+
+  ctx.reply(`Removido: ${nomeFilme}`);
+});
+
+bot.launch();
+console.log('Bot rodando...');
+
+process.once('SIGINT', () => bot.stop('SIGINT'));
+process.once('SIGTERM', () => bot.stop('SIGTERM'));
+
 
 
 
