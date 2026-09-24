@@ -19,3 +19,16 @@ export async function buscarFilmes(nome) {
     ano: filme.release_date ? filme.release_date.slice(0, 4) : "????",
   }));
 }
+
+export async function buscarDisponibilidade(tmdbId) {
+  const url = `${BASE_URL}/movie/${tmdbId}/watch/providers?api_key=${API_KEY}`;
+  const resposta = await fetch(url);
+  const dados = resposta.json()
+
+  const resultados = dados.results || {}
+
+  return {
+    US: resultados.US?.flatrate || [],
+    BR: resultados.BR?.flatrate || [],
+  }
+}
