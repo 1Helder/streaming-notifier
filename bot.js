@@ -3,6 +3,9 @@ import 'dotenv/config';
 import db from './db.js';
 import { buscarFilmes } from './tmdb.js';
 
+import cron from 'node-cron';
+import { verificarFilmes } from './verificador.js';
+
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 
 const buscasPendentes = new Map();
@@ -80,7 +83,9 @@ bot.on('text', async (ctx) => {
   ctx.reply(`✅ Adicionado!\n\nVou avisar quando "${filme.titulo}" ficar disponível para streaming.`);
 });
 
-
+cron.schedule('0 */6 * * *', () => {
+  verificarFilmes(bot);
+});
 
 bot.launch();
 console.log('Bot rodando...');

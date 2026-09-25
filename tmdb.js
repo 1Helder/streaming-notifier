@@ -23,7 +23,7 @@ export async function buscarFilmes(nome) {
 export async function buscarDisponibilidade(tmdbId) {
   const url = `${BASE_URL}/movie/${tmdbId}/watch/providers?api_key=${API_KEY}`;
   const resposta = await fetch(url);
-  const dados = resposta.json()
+  const dados = await resposta.json()
 
   const resultados = dados.results || {}
 
