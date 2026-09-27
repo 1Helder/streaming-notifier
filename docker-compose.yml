@@ -1,0 +1,9 @@
+services:
+  streaming-notifier:
+    build: .
+    container_name: streaming-notifier
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./filmes.db:/app/filmes.db
